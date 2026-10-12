@@ -1,0 +1,306 @@
+{
+  "model": "MLP_LARGE",
+  "signals": [
+    {
+      "name": "x",
+      "visibility": "private",
+      "kind": "input",
+      "shape": [
+        8
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "y",
+      "visibility": "public",
+      "kind": "output",
+      "shape": [
+        10
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l0_W",
+      "visibility": "public",
+      "kind": "param",
+      "shape": [
+        16,
+        8
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l0_b",
+      "visibility": "public",
+      "kind": "param",
+      "shape": [
+        16
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l2_W",
+      "visibility": "public",
+      "kind": "param",
+      "shape": [
+        16,
+        16
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l2_b",
+      "visibility": "public",
+      "kind": "param",
+      "shape": [
+        16
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l4_W",
+      "visibility": "public",
+      "kind": "param",
+      "shape": [
+        10,
+        16
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l4_b",
+      "visibility": "public",
+      "kind": "param",
+      "shape": [
+        10
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l0",
+      "visibility": "private",
+      "kind": "intermediate",
+      "shape": [
+        16
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l1",
+      "visibility": "private",
+      "kind": "intermediate",
+      "shape": [
+        16
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l2",
+      "visibility": "private",
+      "kind": "intermediate",
+      "shape": [
+        16
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l3",
+      "visibility": "private",
+      "kind": "intermediate",
+      "shape": [
+        16
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l4",
+      "visibility": "private",
+      "kind": "intermediate",
+      "shape": [
+        10
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "l5",
+      "visibility": "private",
+      "kind": "intermediate",
+      "shape": [
+        1
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "conf",
+      "visibility": "private",
+      "kind": "intermediate",
+      "shape": [
+        10
+      ],
+      "dtype": "field"
+    },
+    {
+      "name": "model_commit",
+      "visibility": "public",
+      "kind": "intermediate",
+      "shape": [
+        1
+      ],
+      "dtype": "field"
+    }
+  ],
+  "constraints": [
+    {
+      "cid": 0,
+      "kind": "dense",
+      "out": "l0",
+      "inputs": [
+        "x",
+        "l0_W",
+        "l0_b"
+      ],
+      "cost": 16,
+      "intent": "inference",
+      "meta": {
+        "n_out": 16,
+        "n_in": 8
+      }
+    },
+    {
+      "cid": 1,
+      "kind": "relu",
+      "out": "l1",
+      "inputs": [
+        "l0"
+      ],
+      "cost": 16,
+      "intent": "inference",
+      "meta": {
+        "n_out": 16
+      }
+    },
+    {
+      "cid": 2,
+      "kind": "dense",
+      "out": "l2",
+      "inputs": [
+        "l1",
+        "l2_W",
+        "l2_b"
+      ],
+      "cost": 16,
+      "intent": "inference",
+      "meta": {
+        "n_out": 16,
+        "n_in": 16
+      }
+    },
+    {
+      "cid": 3,
+      "kind": "relu",
+      "out": "l3",
+      "inputs": [
+        "l2"
+      ],
+      "cost": 16,
+      "intent": "inference",
+      "meta": {
+        "n_out": 16
+      }
+    },
+    {
+      "cid": 4,
+      "kind": "dense",
+      "out": "l4",
+      "inputs": [
+        "l3",
+        "l4_W",
+        "l4_b"
+      ],
+      "cost": 10,
+      "intent": "inference",
+      "meta": {
+        "n_out": 10,
+        "n_in": 16
+      }
+    },
+    {
+      "cid": 5,
+      "kind": "argmax",
+      "out": "l5",
+      "inputs": [
+        "l4"
+      ],
+      "cost": 18,
+      "intent": "inference",
+      "meta": {
+        "n_out": 10
+      }
+    },
+    {
+      "cid": 6,
+      "kind": "alias",
+      "out": "y",
+      "inputs": [
+        "l5"
+      ],
+      "cost": 0,
+      "intent": "inference",
+      "meta": {}
+    },
+    {
+      "cid": 7,
+      "kind": "softmax",
+      "out": "conf",
+      "inputs": [
+        "l4"
+      ],
+      "cost": 10,
+      "intent": "confidence",
+      "meta": {
+        "n_out": 10
+      }
+    },
+    {
+      "cid": 8,
+      "kind": "model_commit",
+      "out": "model_commit",
+      "inputs": [
+        "l0_W",
+        "l0_b",
+        "l2_W",
+        "l2_b",
+        "l4_W",
+        "l4_b"
+      ],
+      "cost": 1,
+      "intent": "model_is",
+      "meta": {
+        "n_params": 6
+      }
+    }
+  ],
+  "intents": [
+    {
+      "kind": "model_is",
+      "detail": {
+        "model": "MLP_LARGE"
+      }
+    },
+    {
+      "kind": "inference",
+      "detail": {
+        "input": "x",
+        "output": "y"
+      }
+    }
+  ],
+  "metrics": {
+    "constraint_rows": 9,
+    "r1cs_cost": 103
+  },
+  "metadata": {
+    "source": "examples/mlp_large.piml",
+    "basedir": "D:\\Poly\\CD\\Proofintent-ML\\examples"
+  }
+}
