@@ -1,0 +1,91 @@
+{
+  "model": "MLP_LARGE",
+  "public_signals": [
+    "y",
+    "l0_W",
+    "l0_b",
+    "l4_W",
+    "l4_b",
+    "l2",
+    "l3",
+    "model_commit"
+  ],
+  "private_signals": [
+    "x",
+    "l4",
+    "l5"
+  ],
+  "intents": [
+    {
+      "kind": "model_is",
+      "detail": {
+        "model": "MLP_LARGE"
+      }
+    },
+    {
+      "kind": "inference",
+      "detail": {
+        "input": "x",
+        "output": "y"
+      }
+    }
+  ],
+  "metrics": {
+    "baseline": {
+      "constraint_rows": 9,
+      "r1cs_cost": 103,
+      "public_signals": 8,
+      "private_signals": 8
+    },
+    "optimized": {
+      "constraint_rows": 4,
+      "r1cs_cost": 20,
+      "public_signals": 8,
+      "private_signals": 3
+    },
+    "constraint_rows_removed": 5,
+    "r1cs_cost_removed": 83,
+    "r1cs_cost_reduction_pct": 80.58,
+    "passes": [
+      {
+        "pass": "constant_propagation",
+        "before_rows": 9,
+        "after_rows": 7,
+        "before_cost": 103,
+        "after_cost": 71,
+        "cost_removed": 32,
+        "details": {
+          "folded_ops": 2
+        }
+      },
+      {
+        "pass": "dead_constraint_elimination",
+        "before_rows": 7,
+        "after_rows": 4,
+        "before_cost": 71,
+        "after_cost": 29,
+        "cost_removed": 42,
+        "details": {
+          "intents": [
+            "model_is",
+            "inference"
+          ],
+          "removed_rows": 3
+        }
+      },
+      {
+        "pass": "fixed_point_quantization",
+        "before_rows": 4,
+        "after_rows": 4,
+        "before_cost": 29,
+        "after_cost": 20,
+        "cost_removed": 9,
+        "details": {
+          "bits": 16,
+          "frac_bits": 8,
+          "quantized_relu_layers": 0
+        }
+      }
+    ]
+  }
+}

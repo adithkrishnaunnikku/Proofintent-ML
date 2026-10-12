@@ -1,0 +1,86 @@
+{
+  "name": "MLP_LARGE",
+  "inputs": [
+    {
+      "name": "x",
+      "size": 8
+    }
+  ],
+  "outputs": [
+    {
+      "name": "y",
+      "size": 10
+    }
+  ],
+  "ops": [
+    {
+      "op": "dense",
+      "output": "l0",
+      "inputs": [
+        "x"
+      ],
+      "attrs": {
+        "in": 8,
+        "out": 16,
+        "weights": "weights/mlp_large/w1.json",
+        "bias": "weights/mlp_large/b1.json"
+      }
+    },
+    {
+      "op": "relu",
+      "output": "l1",
+      "inputs": [
+        "l0"
+      ],
+      "attrs": {
+        "n_out": 16
+      }
+    },
+    {
+      "op": "dense",
+      "output": "l2",
+      "inputs": [
+        "l1"
+      ],
+      "attrs": {
+        "in": 16,
+        "out": 16,
+        "weights": "weights/mlp_large/w2.json",
+        "bias": "weights/mlp_large/b2.json"
+      }
+    },
+    {
+      "op": "relu",
+      "output": "l3",
+      "inputs": [
+        "l2"
+      ],
+      "attrs": {
+        "n_out": 16
+      }
+    },
+    {
+      "op": "dense",
+      "output": "l4",
+      "inputs": [
+        "l3"
+      ],
+      "attrs": {
+        "in": 16,
+        "out": 10,
+        "weights": "weights/mlp_large/w3.json",
+        "bias": "weights/mlp_large/b3.json"
+      }
+    },
+    {
+      "op": "argmax",
+      "output": "l5",
+      "inputs": [
+        "l4"
+      ],
+      "attrs": {
+        "n_out": 10
+      }
+    }
+  ]
+}

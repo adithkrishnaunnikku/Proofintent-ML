@@ -98,6 +98,21 @@ Proofintent-ML/
 
 ---
 
+## Quick Start (Interactive Demo)
+
+On Windows, you can launch the complete interactive demonstration suite:
+
+```cmd
+demo.bat
+```
+
+Or run all 5 demonstration stages automatically:
+```cmd
+demo.bat --all
+```
+
+---
+
 ## Usage & Commands
 
 The project provides a CLI accessible via `python -m proofintent` (or `pimlc`).

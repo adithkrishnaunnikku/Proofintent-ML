@@ -1,0 +1,193 @@
+{
+  "model": "MLP_LARGE",
+  "signals": [
+    {
+      "name": "x",
+      "visibility": "private",
+      "kind": "input",
+      "shape": [
+        8
+      ],
+      "dtype": "fixed<16,8>"
+    },
+    {
+      "name": "y",
+      "visibility": "public",
+      "kind": "output",
+      "shape": [
+        10
+      ],
+      "dtype": "fixed<16,8>"
+    },
+    {
+      "name": "l0_W",
+      "visibility": "public",
+      "kind": "param",
+      "shape": [
+        16,
+        8
+      ],
+      "dtype": "fixed<16,8>"
+    },
+    {
+      "name": "l0_b",
+      "visibility": "public",
+      "kind": "param",
+      "shape": [
+        16
+      ],
+      "dtype": "fixed<16,8>"
+    },
+    {
+      "name": "l4_W",
+      "visibility": "public",
+      "kind": "param",
+      "shape": [
+        10,
+        16
+      ],
+      "dtype": "fixed<16,8>"
+    },
+    {
+      "name": "l4_b",
+      "visibility": "public",
+      "kind": "param",
+      "shape": [
+        10
+      ],
+      "dtype": "fixed<16,8>"
+    },
+    {
+      "name": "l2",
+      "visibility": "public",
+      "kind": "const",
+      "shape": [
+        1
+      ],
+      "dtype": "fixed<16,8>"
+    },
+    {
+      "name": "l3",
+      "visibility": "public",
+      "kind": "const",
+      "shape": [
+        1
+      ],
+      "dtype": "fixed<16,8>"
+    },
+    {
+      "name": "l4",
+      "visibility": "private",
+      "kind": "intermediate",
+      "shape": [
+        10
+      ],
+      "dtype": "fixed<16,8>"
+    },
+    {
+      "name": "l5",
+      "visibility": "private",
+      "kind": "intermediate",
+      "shape": [
+        1
+      ],
+      "dtype": "fixed<16,8>"
+    },
+    {
+      "name": "model_commit",
+      "visibility": "public",
+      "kind": "intermediate",
+      "shape": [
+        1
+      ],
+      "dtype": "fixed<16,8>"
+    }
+  ],
+  "constraints": [
+    {
+      "cid": 2,
+      "kind": "dense",
+      "out": "l4",
+      "inputs": [
+        "l3",
+        "l4_W",
+        "l4_b"
+      ],
+      "cost": 10,
+      "intent": "inference",
+      "meta": {
+        "n_out": 10,
+        "n_in": 16,
+        "quantized": true
+      }
+    },
+    {
+      "cid": 3,
+      "kind": "argmax",
+      "out": "l5",
+      "inputs": [
+        "l4"
+      ],
+      "cost": 9,
+      "intent": "inference",
+      "meta": {
+        "n_out": 10,
+        "quantized": true
+      }
+    },
+    {
+      "cid": 4,
+      "kind": "alias",
+      "out": "y",
+      "inputs": [
+        "l5"
+      ],
+      "cost": 0,
+      "intent": "inference",
+      "meta": {}
+    },
+    {
+      "cid": 6,
+      "kind": "model_commit",
+      "out": "model_commit",
+      "inputs": [
+        "l0_W",
+        "l0_b",
+        "l4_W",
+        "l4_b"
+      ],
+      "cost": 1,
+      "intent": "model_is",
+      "meta": {
+        "n_params": 4
+      }
+    }
+  ],
+  "intents": [
+    {
+      "kind": "model_is",
+      "detail": {
+        "model": "MLP_LARGE"
+      }
+    },
+    {
+      "kind": "inference",
+      "detail": {
+        "input": "x",
+        "output": "y"
+      }
+    }
+  ],
+  "metrics": {
+    "constraint_rows": 4,
+    "r1cs_cost": 20
+  },
+  "metadata": {
+    "source": "examples/mlp_large.piml",
+    "basedir": "D:\\Poly\\CD\\Proofintent-ML\\examples",
+    "quantization": {
+      "bits": 16,
+      "frac_bits": 8
+    }
+  }
+}

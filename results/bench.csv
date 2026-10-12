@@ -1,5 +1,5 @@
 model,mode,constraint_rows,r1cs_cost,prove_time_ms,emulated_prove_ms,verify_time_ms,peak_memory_kb,verify_ok
-mlp_small,baseline,8,31,2.0584,9.4767,0.2508,13.4551,True
-mlp_small,optimized,8,22,2.0784,9.3871,0.2645,11.9941,True
-mlp_large,baseline,9,103,5.9494,33.1687,0.4264,34.6104,True
-mlp_large,optimized,4,20,5.5805,6.3302,0.4255,34.251,True
+mlp_small,baseline,8,31,6.8471,17.456,1.0716,15.6338,True
+mlp_small,optimized,8,22,6.2312,11.4764,1.0223,12.8955,True
+mlp_large,baseline,9,103,15.7941,62.2004,1.5436,79.6484,True
+mlp_large,optimized,4,20,15.5337,10.9942,1.8412,79.3545,True
